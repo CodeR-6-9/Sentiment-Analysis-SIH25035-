@@ -1281,3 +1281,26 @@ export const mockGeographyData = [
     value: 171135,
   },
 ];
+
+// In your src/data/mockData.js file
+// Add this variable to your mockData.js file
+export const mockTextBlockContent =
+  "Based on the recent analysis, there has been a significant upward trend in positive sentiment, increasing by 14% over the last quarter. This is primarily driven by successful marketing campaigns and improved customer service response times. However, traffic from organic search has seen a slight dip of 5%, which should be a key focus area for the upcoming period. Overall sales volume remains strong, correlating with the high engagement rates from new client acquisitions.Based on the recent analysis, there has been a significant upward trend in positive sentiment, increasing by 14% over the last quarter. This is primarily driven by successful marketing campaigns and improved customer service response times. However, traffic from organic search has seen a slight dip of 5%, which should be a key focus area for the upcoming period. Overall sales volume remains strong, correlating with the high engagement rates from new client acquisitionsBased on the recent analysis, there has been a significant upward trend in positive sentiment, increasing by 14% over the last quarter. This is primarily driven by successful marketing campaigns and improved customer service response times. However, traffic from organic search has seen a slight dip of 5%, which should be a key focus area for the upcoming period. Overall sales volume remains strong, correlating with the high engagement rates from new client acquisitionsBased on the recent analysis, there has been a significant upward trend in positive sentiment, increasing by 14% over the last quarter. This is primarily driven by successful marketing campaigns and improved customer service response times. However, traffic from organic search has seen a slight dip of 5%, which should be a key focus area for the upcoming period. Overall sales volume remains strong, correlating with the high engagement rates from new client acquisitions";
+export const mockWordCloudData = [
+  { text: 'React', value: 125 },
+  { text: 'Nivo', value: 105 },
+  { text: 'Data Viz', value: 95 },
+  { text: 'JavaScript', value: 90 },
+  { text: 'MUI', value: 85 },
+  { text: 'Component', value: 80 },
+  { text: 'Dashboard', value: 75 },
+  { text: 'CSS', value: 70 },
+  { text: 'Responsive', value: 65 },
+  { text: 'Theme', value: 60 },
+  { text: 'Props', value: 55 },
+  { text: 'API', value: 50 },
+  { text: 'State', value: 45 },
+  { text: 'HTML', value: 40 },
+  { text: 'Node.js', value: 35 },
+  { text: 'Git', value: 30 },
+];
