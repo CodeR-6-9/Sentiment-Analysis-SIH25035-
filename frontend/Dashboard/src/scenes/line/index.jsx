@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
-import LineChart from "../../components/LineChart";
+import WordCloud from "../../components/WordCloud";
 
 const Line = () => {
   return (
     <Box m="20px">
-      <Header title="Line Chart" subtitle="Simple Line Chart" />
+      <Header title="Word Cloud"/>
       <Box height="75vh">
-        <LineChart />
+        <WordCloud />
       </Box>
     </Box>
   );

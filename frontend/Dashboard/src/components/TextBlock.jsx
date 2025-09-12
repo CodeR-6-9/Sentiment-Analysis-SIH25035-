@@ -8,7 +8,7 @@ const TextBlock = ({ title, content }) => {
   return (
     <Box width="100%" height="100%" p="30px">
       {/* TITLE */}
-      <Typography variant="h5" fontWeight="600" sx={{ mb: "15px" }}>
+      <Typography variant="h3" fontWeight="600" sx={{ mb: "30px" }}>
         {title}
       </Typography>
 
@@ -32,7 +32,7 @@ const TextBlock = ({ title, content }) => {
           },
         }}
       >
-        <Typography variant="body1" sx={{ color: colors.grey[200], lineHeight: "1.7" }}>
+        <Typography variant="h5" sx={{ color: colors.grey[200], lineHeight: "2" }}>
           {content}
         </Typography>
       </Box>
