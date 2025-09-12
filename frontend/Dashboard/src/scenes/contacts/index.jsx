@@ -11,7 +11,6 @@ const Contacts = () => {
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
-    { field: "registrarId", headerName: "Registrar ID" },
     {
       field: "name",
       headerName: "Name",
@@ -31,23 +30,18 @@ const Contacts = () => {
       flex: 1,
     },
     {
+      field: "city",
+      headerName: "City",
+      flex: 1,
+    },
+    {
       field: "email",
       headerName: "Email",
       flex: 1,
     },
     {
       field: "address",
-      headerName: "Address",
-      flex: 1,
-    },
-    {
-      field: "city",
-      headerName: "City",
-      flex: 1,
-    },
-    {
-      field: "zipCode",
-      headerName: "Zip Code",
+      headerName: "Summary",
       flex: 1,
     },
   ];
@@ -55,8 +49,8 @@ const Contacts = () => {
   return (
     <Box m="20px">
       <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
+        title="Summaries"
+        subtitle="List of Relevant Individual Summaries for in-depth analysis"
       />
       <Box
         m="40px 0 0 0"
@@ -91,6 +85,7 @@ const Contacts = () => {
         }}
       >
         <DataGrid
+          checkboxSelection // --- ADDED THIS PROP ---
           rows={mockDataContacts}
           columns={columns}
           components={{ Toolbar: GridToolbar }}

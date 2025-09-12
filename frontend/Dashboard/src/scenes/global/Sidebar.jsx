@@ -106,7 +106,7 @@ const Sidebar = () => {
               Analysis
             </Typography>
             <Item
-              title="Summaries"
+              title="Summary"
               to="/bar"
               icon={<BarChartOutlinedIcon />}
               selected={selected}
@@ -123,6 +123,13 @@ const Sidebar = () => {
               title="Word Cloud"
               to="/line"
               icon={<TimelineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Individual Summaries"
+              to="/contacts"
+              icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
