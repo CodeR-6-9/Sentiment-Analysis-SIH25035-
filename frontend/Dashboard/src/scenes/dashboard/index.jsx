@@ -1,17 +1,12 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import { mockTextBlockContent } from "../../data/mockData"; // --- MODIFIED
+import { mockTextBlockContent } from "../../data/mockData";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
-import EmailIcon from "@mui/icons-material/Email";
-import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import TrafficIcon from "@mui/icons-material/Traffic";
 import Header from "../../components/Header";
 import TextBlock from "../../components/TextBlock";
-import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
-import ProgressCircle from "../../components/ProgressCircle";
 import WordCloud from "../../components/WordCloud";
 import PieChart from "../../components/PieChart";
 import StorageIcon from '@mui/icons-material/Storage';
@@ -146,7 +141,7 @@ const Dashboard = () => {
 
         {/* ROW 3 */}
         <Box
-          gridColumn="span 12" // --- MODIFIED from span 8 to span 12
+          gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
@@ -155,8 +150,6 @@ const Dashboard = () => {
             content={mockTextBlockContent}
           />
         </Box>
-        
-        {/* --- RECENT TRANSACTIONS BLOCK REMOVED --- */}
         
       </Box>
     </Box>
