@@ -402,19 +402,19 @@ export const mockPieData = [
     id: "favor",
     label: "favor",
     value: 324,
-    color: "hsla(104, 100%, 50%, 1.00)",
+    color: "hsla(0, 0%, 100%, 1.00)",
   },
   {
     id: "neutral",
     label: "neutral",
     value: 503,
-    color: "hsla(0, 0%, 96%, 1.00)",
+    color: "hsla(0, 2%, 55%, 1.00)",
   },
   {
     id: "oppose",
     label: "oppose",
     value: 324,
-    color: "hsla(344, 100%, 50%, 1.00)",
+    color: "hsla(0, 0%, 2%, 1.00)",
   },
 ];
 
