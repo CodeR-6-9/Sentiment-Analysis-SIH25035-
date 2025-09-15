@@ -5,17 +5,14 @@ import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import CloudQueueIcon from '@mui/icons-material/CloudQueue';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -108,7 +105,7 @@ const Sidebar = () => {
             <Item
               title="Summary"
               to="/bar"
-              icon={<BarChartOutlinedIcon />}
+              icon={<ArticleIcon/>}
               selected={selected}
               setSelected={setSelected}
             />
@@ -122,7 +119,7 @@ const Sidebar = () => {
             <Item
               title="Word Cloud"
               to="/line"
-              icon={<TimelineOutlinedIcon />}
+              icon={<CloudQueueIcon />}
               selected={selected}
               setSelected={setSelected}
             />
