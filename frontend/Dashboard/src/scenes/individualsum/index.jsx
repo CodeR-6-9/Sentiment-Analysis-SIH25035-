@@ -1,13 +1,33 @@
-import { Box } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Box, useTheme } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
+import { getContactsData } from "../../services/apiService";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
-import { useTheme } from "@mui/material";
 
-const Contacts = () => {
+// --- CONTROL YOUR DATA SOURCE HERE ---
+const USE_API = true; // Set to 'true' for live data, 'false' for mock data
+// ------------------------------------
+
+const IndiSum = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [contacts, setContacts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (USE_API) {
+      getContactsData().then(data => {
+        setContacts(data);
+        setLoading(false);
+      });
+    } else {
+      setContacts(mockDataContacts);
+      setLoading(false);
+    }
+  }, []);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -16,28 +36,6 @@ const Contacts = () => {
     //   headerName: "Name",
     //   flex: 1,
     //   cellClassName: "name-column--cell",
-    // },
-    // {
-    //   field: "age",
-    //   headerName: "Age",
-    //   type: "number",
-    //   headerAlign: "left",
-    //   align: "left",
-    // },
-    // {
-    //   field: "phone",
-    //   headerName: "Phone Number",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "city",
-    //   headerName: "City",
-    //   flex: 1,
-    // },
-    // {
-    //   field: "email",
-    //   headerName: "Email",
-    //   flex: 1,
     // },
     {
       field: "address",
@@ -85,8 +83,9 @@ const Contacts = () => {
         }}
       >
         <DataGrid
-          checkboxSelection // --- ADDED THIS PROP ---
-          rows={mockDataContacts}
+          loading={loading}
+          checkboxSelection
+          rows={contacts}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
@@ -95,4 +94,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default IndiSum;

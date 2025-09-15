@@ -1,0 +1,10 @@
+# Python
+/backend/.venv/
+__pycache__/
+*.pyc
+
+# Node.js
+/frontend/Dashboard/node_modules/
+/frontend/Dashboard/build/
+.npm
+npm-debug.log

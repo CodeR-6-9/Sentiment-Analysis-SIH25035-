@@ -1,23 +1,53 @@
+import { useState, useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
+import { getTextBlockContent } from "../services/apiService";
+import { mockTextBlockContent } from "../data/mockData";
 
-const TextBlock = ({ title, content }) => {
+const USE_API = true; //'false' for mock data
+
+
+const TextBlock = ({ title }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (USE_API) {
+      getTextBlockContent().then(data => {
+        setContent(data);
+        setLoading(false);
+      });
+    } else {
+      setContent(mockTextBlockContent);
+      setLoading(false);
+    }
+  }, []);
+
+  if (loading) {
+    return (
+      <Box p="30px">
+        <Typography variant="h3" fontWeight="600" sx={{ mb: "30px" }}>
+          {title}
+        </Typography>
+        <Typography>Loading Summary...</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box width="100%" height="100%" p="30px">
-      {/* TITLE */}
       <Typography variant="h3" fontWeight="600" sx={{ mb: "30px" }}>
         {title}
       </Typography>
 
-      {/* CONTENT BOX */}
       <Box
-        height="75%" // Use a percentage of the parent's height
-        overflow="auto" // This makes the content scrollable if it overflows
+        height="75%"
+        overflow="auto"
         sx={{
-          "&::-webkit-scrollbar": { // Optional: Style the scrollbar
+          "&::-webkit-scrollbar": {
             width: "8px",
           },
           "&::-webkit-scrollbar-track": {
@@ -32,7 +62,7 @@ const TextBlock = ({ title, content }) => {
           },
         }}
       >
-        <Typography variant="h5" sx={{ color: colors.grey[200], lineHeight: "2" }}>
+        <Typography variant="h5" sx={{ color: colors.grey[200], lineHeight: "1.7" }}>
           {content}
         </Typography>
       </Box>
