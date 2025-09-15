@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import Header from "../../components/Header";
 import WordCloud from "../../components/WordCloud";
 
-const Line = () => {
+const Wc = () => {
   return (
     <Box m="20px">
       <Header title="Word Cloud"/>
@@ -13,4 +13,4 @@ const Line = () => {
   );
 };
 
-export default Line;
+export default Wc;

@@ -6,10 +6,7 @@ import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import SummarizeIcon from '@mui/icons-material/Summarize';
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import CloudQueueIcon from '@mui/icons-material/CloudQueue';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -104,7 +101,7 @@ const Sidebar = () => {
             </Typography>
             <Item
               title="Summary"
-              to="/bar"
+              to="/summary"
               icon={<ArticleIcon/>}
               selected={selected}
               setSelected={setSelected}
@@ -118,14 +115,14 @@ const Sidebar = () => {
             />
             <Item
               title="Word Cloud"
-              to="/line"
+              to="/wordcloud"
               icon={<CloudQueueIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Individual Summaries"
-              to="/contacts"
+              to="/individualsummaries"
               icon={<ContactsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

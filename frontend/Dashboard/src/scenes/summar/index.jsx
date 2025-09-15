@@ -3,7 +3,7 @@ import Header from "../../components/Header";
 import TextBlock from "../../components/TextBlock";
 import { mockTextBlockContent } from "../../data/mockData"; // 1. Import your data
 
-const Bar = () => {
+const Summary = () => {
   return (
     <Box m="20px">
       <Header title="Summary" subtitle="Detailed Analysis Report" />
@@ -18,4 +18,4 @@ const Bar = () => {
   );
 };
 
-export default Bar;
+export default Summary;
