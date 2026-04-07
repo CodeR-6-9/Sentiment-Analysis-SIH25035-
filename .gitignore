@@ -1,10 +1,38 @@
-# Python
+# =========================
+# Backend (Python / Flask)
+# =========================
 /backend/.venv/
-__pycache__/
-*.pyc
+/backend/__pycache__/
+/backend/*.py[cod]
+/backend/*$py.class
 
-# Node.js
+# Logs and Databases
+/backend/*.log
+/backend/*.db
+/backend/*.sqlite3
+
+# Backend Secrets
+/backend/.env
+
+# =========================
+# Frontend (React / Node.js)
+# =========================
 /frontend/Dashboard/node_modules/
 /frontend/Dashboard/build/
-.npm
-npm-debug.log
+/frontend/Dashboard/dist/
+/frontend/Dashboard/.npm
+/frontend/Dashboard/npm-debug.log*
+/frontend/Dashboard/yarn-error.log*
+
+# Frontend Secrets
+/frontend/Dashboard/.env
+/frontend/Dashboard/.env.local
+/frontend/Dashboard/.env.development
+/frontend/Dashboard/.env.test
+/frontend/Dashboard/.env.production
+
+# =========================
+# OS & General Files
+# =========================
+.DS_Store
+Thumbs.db

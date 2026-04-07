@@ -7,14 +7,22 @@ import { mockPieData } from "../data/mockData";
 
 const USE_API = true; //'false' for mock data
 
-const PieChart = () => {
+const PieChart = ({ data: propData }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState(propData || []);
+  const [loading, setLoading] = useState(!propData);
 
   useEffect(() => {
+    // If propData is passed from parent, use it directly
+    if (propData && propData.length > 0) {
+      setData(propData);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise, fetch from API or use mock data
     if (USE_API) {
       getPieData().then(apiData => {
         setData(apiData);
@@ -24,7 +32,7 @@ const PieChart = () => {
       setData(mockPieData);
       setLoading(false);
     }
-  }, []);
+  }, [propData]);
 
   if (loading) {
     return (

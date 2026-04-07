@@ -11,6 +11,18 @@ import Login from "./scenes/login";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 
+// Suppress deprecation warnings from third-party libraries (Nivo, react-wordcloud)
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes("Support for defaultProps will be removed")
+  ) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 function App() {
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);

@@ -30,3 +30,27 @@ export const getTextBlockContent = async () => {
     return "Error: Could not load content.";
   }
 };
+
+/**
+ * Submit a review for sentiment analysis
+ * @param {string} text - The review text to analyze
+ * @returns {Promise<Object>} - The sentiment analysis result including updated stats
+ */
+export const submitReview = async (text) => {
+  try {
+    const response = await fetch(`${API_URL}/analyze`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text }),
+    });
+    if (!response.ok) {
+      throw new Error(`Network response was not ok: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to submit review:", error);
+    throw error;
+  }
+};

@@ -1,6 +1,7 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme, TextField } from "@mui/material";
+import { useState, useEffect } from "react";
 import { tokens } from "../../theme";
-import { mockTextBlockContent } from "../../data/mockData";
+import { getPieData, submitReview, getTextBlockContent } from "../../services/apiService";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
@@ -14,6 +15,56 @@ import StorageIcon from '@mui/icons-material/Storage';
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  // State management
+  const [pieData, setPieData] = useState([]);
+  const [reviewText, setReviewText] = useState("");
+  const [summaryText, setSummaryText] = useState("Loading analysis summary...");
+
+  // Fetch pie data and summary on component mount
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getPieData();
+        setPieData(data);
+        
+        // Fetch summary text
+        const summary = await getTextBlockContent();
+        setSummaryText(summary);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // Calculate dynamic metrics from pieData
+  const totalReviews = pieData.reduce((sum, item) => sum + item.value, 0);
+  const favorCount = pieData.find((item) => item.id === "favor")?.value || 0;
+  const opposeCount = pieData.find((item) => item.id === "oppose")?.value || 0;
+
+  // Handle review submission
+  const handleSubmitReview = async () => {
+    if (!reviewText.trim()) {
+      alert("Please enter a review");
+      return;
+    }
+
+    try {
+      await submitReview(reviewText);
+      setReviewText("");
+      // Re-fetch pie data to update dashboard
+      const updatedData = await getPieData();
+      setPieData(updatedData);
+      
+      // Re-fetch summary text to update with new review
+      const updatedSummary = await getTextBlockContent();
+      setSummaryText(updatedSummary);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert("Failed to submit review. Please try again.");
+    }
+  };
 
   return (
     <Box m="20px">
@@ -37,12 +88,66 @@ const Dashboard = () => {
         </Box>
       </Box>
 
+      {/* REVIEW SUBMISSION FORM */}
+      <Box
+        backgroundColor={colors.primary[400]}
+        p="20px"
+        borderRadius="4px"
+        mt="20px"
+        mb="20px"
+      >
+        <Typography variant="h5" fontWeight="600" mb="15px">
+          Submit a Legal Review
+        </Typography>
+        <Box display="flex" gap="10px">
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            placeholder="Enter your legal review here..."
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                color: colors.grey[100],
+                "& fieldset": {
+                  borderColor: colors.grey[300],
+                },
+                "&:hover fieldset": {
+                  borderColor: colors.blueAccent[500],
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: colors.blueAccent[500],
+                },
+              },
+            }}
+          />
+          <Button
+            variant="contained"
+            onClick={handleSubmitReview}
+            sx={{
+              backgroundColor: colors.greenAccent[600],
+              color: colors.grey[100],
+              fontWeight: "bold",
+              padding: "15px 30px",
+              alignSelf: "flex-end",
+              "&:hover": {
+                backgroundColor: colors.greenAccent[700],
+              },
+            }}
+          >
+            Submit
+          </Button>
+        </Box>
+      </Box>
+
       {/* GRID & CHARTS */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
+        mt="20px"
       >
         {/* ROW 1 */}
         <Box
@@ -53,7 +158,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="120,361"
+            title={totalReviews.toLocaleString()}
             subtitle="Review Received"
             progress="0.75"
             increase="+14%"
@@ -72,7 +177,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="35,642"
+            title={favorCount.toLocaleString()}
             subtitle="In-favour"
             progress="0.30"
             increase="+5%"
@@ -91,7 +196,7 @@ const Dashboard = () => {
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
+            title={opposeCount.toLocaleString()}
             subtitle="In-oppose"
             progress="0.30"
             increase="+5%"
@@ -117,7 +222,7 @@ const Dashboard = () => {
             height="250px"
             mt="25px"
           >
-            <PieChart />
+            <PieChart data={pieData} />
           </Box>
         </Box>
         
@@ -147,7 +252,7 @@ const Dashboard = () => {
         >
           <TextBlock
             title="Comprehensive Analysis Summary"
-            content={mockTextBlockContent}
+            content={summaryText}
           />
         </Box>
         

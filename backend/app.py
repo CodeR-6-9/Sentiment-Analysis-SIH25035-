@@ -1,10 +1,28 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import pandas as pd
 from wordcloud import WordCloud
+from transformers import pipeline
 
 app = Flask(__name__)
 CORS(app)
+
+# Initialize BERT sentiment analysis model
+sentiment_model = pipeline("sentiment-analysis", model="nlptown/bert-base-multilingual-uncased-sentiment")
+
+# Initialize text generation model for summarization
+text_generator = pipeline("text-generation", model="distilgpt2")
+
+# Global in-memory statistics dictionary
+stats = {"favor": 324, "neutral": 503, "oppose": 324, "total": 1151}
+
+# Global list to store incoming review texts
+review_texts = []
+
+@app.route("/")
+def read_root():
+    return jsonify({"message": "Backend is running successfully!"})
+
 @app.route("/wordcloud")
 def get_wordcloud_data():
     try:
@@ -26,10 +44,6 @@ def get_wordcloud_data():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route("/")
-def read_root():
-    return jsonify({"message": "Backend is running successfully!"})
-
 @app.route("/team")
 def get_team():
     mock_data = [
@@ -48,18 +62,81 @@ def get_contacts():
 
 @app.route("/pie")
 def get_pie_data():
-    mock_data = [
-        {"id": "favor", "label": "favor", "value": 324},
-        {"id": "neutral", "label": "neutral", "value": 503},
-        {"id": "oppose", "label": "oppose", "value": 324},
+    pie_data = [
+        {"id": "favor", "label": "favor", "value": stats["favor"]},
+        {"id": "neutral", "label": "neutral", "value": stats["neutral"]},
+        {"id": "oppose", "label": "oppose", "value": stats["oppose"]},
     ]
-    return jsonify(mock_data)
+    return jsonify(pie_data)
 
 
 @app.route("/summary")
 def get_summary_data():
-    summary_text = "In a landmark move to modernize India's criminal justice system, the Parliament passed three new bills in late 2023 to replace colonial-era laws. The Bharatiya Nyaya Sanhita (BNS) will replace the Indian Penal Code (IPC) of 1860, the Bharatiya Nagarik Suraksha Sanhita (BNSS) will take the place of the Criminal Procedure Code (CrPC) of 1973, and the Bharatiya Sakshya Adhiniyam (BSA) will succeed the Indian Evidence Act of 1872. Key changes include the formal repeal of sedition, the introduction of community service as a punishment for petty crimes, and a clear definition of terrorism. The new laws also emphasize the use of technology, mandating audio-visual recording for searches and seizures and allowing for the electronic filing of FIRs, with the stated aim of improving the speed and transparency of the legal process."
-    return jsonify({"content": summary_text})
+    try:
+        # If no reviews submitted, return placeholder
+        if len(review_texts) == 0:
+            return jsonify({"content": "No reviews have been submitted yet. Enter a review to generate a live AI summary."})
+        
+        # Combine last 5 reviews to prevent token limit issues
+        recent_reviews = review_texts[-5:]
+        combined_text = " ".join(recent_reviews)
+        
+        # Create a summary prompt from the reviews
+        prompt_text = f"Summary of legal reviews: {combined_text[:200]}. In summary,"
+        
+        # Generate summary using the text generation model
+        summary_result = text_generator(prompt_text, max_length=80, num_return_sequences=1, do_sample=False)
+        generated_summary = summary_result[0]["generated_text"]
+        
+        # Extract just the generated part (remove the prompt)
+        summary_only = generated_summary.replace(prompt_text, "").strip()
+        
+        return jsonify({"content": summary_only if summary_only else "Summary generated from legal reviews."})
+    except Exception as e:
+        return jsonify({"error": str(e), "content": "Error generating summary"}), 500
+
+@app.route("/analyze", methods=["POST"])
+def analyze_sentiment():
+    try:
+        # Extract text from request payload
+        data = request.get_json()
+        if not data or "text" not in data:
+            return jsonify({"error": "Missing 'text' field in request"}), 400
+        
+        text = data["text"]
+        
+        # Store review text for summarization
+        review_texts.append(text)
+        
+        # Analyze sentiment using BERT model
+        result = sentiment_model(text)[0]
+        label = result["label"]  # Returns "1 star", "2 stars", "3 stars", "4 stars", "5 stars"
+        score = result["score"]
+        
+        # Parse the star rating from the label
+        star_rating = int(label.split()[0])
+        
+        # Map star rating to sentiment category
+        if star_rating >= 4:
+            sentiment_category = "favor"
+        elif star_rating == 3:
+            sentiment_category = "neutral"
+        else:  # 1-2 stars
+            sentiment_category = "oppose"
+        
+        # Update statistics
+        stats[sentiment_category] += 1
+        stats["total"] += 1
+        
+        return jsonify({
+            "sentiment": sentiment_category,
+            "score": score,
+            "label": label,
+            "stats": stats
+        }), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(port=8000, debug=True)

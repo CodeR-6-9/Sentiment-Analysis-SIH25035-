@@ -1,6 +1,8 @@
-fastapi
-uvicorn
-pydantic
-scikit-learn
+flask
+flask-cors
+transformers
 pandas
 numpy
+scikit-learn
+wordcloud
+torch
